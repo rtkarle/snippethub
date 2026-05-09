@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const db = require('../db/db');
-const verifyToken = require('../middleware/auth');
-const crypto = require('crypto');
+const express      = require('express');
+const router       = express.Router();
+const db           = require('../db/db');
+const verifyToken  = require('../middleware/auth');
+const validate     = require('../middleware/validate');
+const crypto       = require('crypto');
 
 // ─── Helper: log activity ───────────────────────────────────────────────────
 async function logActivity(userId, action, snippetId = null, detail = '') {
@@ -160,7 +161,7 @@ router.get('/:id', verifyToken, async (req, res) => {
 });
 
 // ─── POST /api/snippets ──────────────────────────────────────────────────────
-router.post('/', verifyToken, async (req, res) => {
+router.post('/', verifyToken, validate('snippet'), async (req, res) => {
   const { title, language, code, description, is_public, tags } = req.body;
 
   if (!title || !language || !code) {

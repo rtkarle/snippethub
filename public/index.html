@@ -3,132 +3,135 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SnippetHub – Code Snippet Manager</title>
+  <meta name="description" content="SnippetHub — Save, organize and share code snippets"/>
+  <title>SnippetHub — Code Snippet Manager</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"/>
-  <!-- Highlight.js for syntax highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════ NAVBAR -->
-<nav class="navbar navbar-dark navbar-expand-lg px-3 py-2" id="main-navbar">
-  <a class="navbar-brand fw-bold fs-5" href="#">
-    <i class="bi bi-code-slash text-primary"></i> SnippetHub
+<!-- ══════════════════════════════════════ NAVBAR -->
+<nav class="navbar navbar-expand-lg px-3 py-2" id="main-navbar">
+  <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+    <i class="bi bi-code-slash text-primary fs-5"></i>
+    <span>SnippetHub</span>
   </a>
 
-  <!-- Nav tabs (shown when logged in) -->
   <div id="nav-tabs" class="d-none d-lg-flex gap-1 ms-3">
-    <button class="nav-tab-btn active" onclick="showPage('dashboard')"><i class="bi bi-grid"></i> My Snippets</button>
+    <button class="nav-tab-btn active" onclick="showPage('dashboard')"><i class="bi bi-grid-3x3-gap"></i> My Snippets</button>
     <button class="nav-tab-btn" onclick="showPage('explore')"><i class="bi bi-compass"></i> Explore</button>
-    <button class="nav-tab-btn" onclick="showPage('collections')"><i class="bi bi-folder"></i> Collections</button>
-    <button class="nav-tab-btn" onclick="showPage('stats')"><i class="bi bi-bar-chart"></i> Stats</button>
+    <button class="nav-tab-btn" onclick="showPage('collections')"><i class="bi bi-folder2-open"></i> Collections</button>
+    <button class="nav-tab-btn" onclick="showPage('stats')"><i class="bi bi-bar-chart-line"></i> Stats</button>
   </div>
 
   <div class="ms-auto d-flex align-items-center gap-2">
-    <!-- Theme toggle -->
-    <button class="btn btn-sm btn-outline-secondary" onclick="toggleTheme()" title="Toggle theme">
+    <button class="btn btn-sm btn-outline-secondary rounded-circle" style="width:34px;height:34px;padding:0" onclick="toggleTheme()" title="Toggle theme">
       <i class="bi bi-moon-stars" id="theme-icon"></i>
     </button>
-
-    <!-- Auth buttons -->
-    <div id="nav-auth">
-      <button class="btn btn-outline-light btn-sm me-1" onclick="showPage('login')">Login</button>
-      <button class="btn btn-primary btn-sm" onclick="showPage('register')">Register</button>
+    <div id="nav-auth" class="d-flex gap-2">
+      <button class="btn btn-outline-secondary btn-sm" onclick="showPage('login')">Login</button>
+      <button class="btn btn-primary btn-sm fw-semibold" onclick="showPage('register')">Sign Up</button>
     </div>
-
-    <!-- User menu -->
     <div id="nav-user" class="d-none dropdown">
-      <button class="btn btn-sm btn-dark dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown">
-        <span id="nav-avatar">👤</span>
-        <span id="nav-username" class="d-none d-md-inline"></span>
+      <button class="btn btn-sm btn-dark dropdown-toggle d-flex align-items-center gap-2 px-3" data-bs-toggle="dropdown">
+        <span id="nav-avatar" style="font-size:16px">👤</span>
+        <span id="nav-username" class="d-none d-md-inline fw-semibold" style="font-size:13px"></span>
       </button>
-      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
-        <li><a class="dropdown-item" href="#" onclick="showPage('profile')"><i class="bi bi-person"></i> Profile</a></li>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><h6 class="dropdown-header" id="dd-email" style="font-size:11px"></h6></li>
+        <li><a class="dropdown-item" href="#" onclick="showPage('profile')"><i class="bi bi-person me-2"></i>Profile</a></li>
+        <li><a class="dropdown-item" href="#" onclick="showPage('stats')"><i class="bi bi-bar-chart me-2"></i>My Stats</a></li>
         <li><hr class="dropdown-divider"/></li>
-        <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+        <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════════ PAGES -->
-<div class="container-fluid px-3 px-md-4 mt-3" id="app">
+<!-- ══════════════════════════════════════ PAGES -->
+<div class="container-fluid px-3 px-md-4 mt-3 pb-5" id="app">
 
-  <!-- ── LOGIN PAGE ── -->
+  <!-- ── LOGIN ── -->
   <div id="page-login" class="page row justify-content-center">
     <div class="col-md-4 col-sm-10">
-      <div class="auth-card card shadow-lg">
+      <div class="auth-card card">
         <div class="card-body p-4">
           <div class="text-center mb-4">
-            <i class="bi bi-code-slash fs-1 text-primary"></i>
-            <h4 class="mt-2 fw-bold">Welcome Back</h4>
+            <div style="font-size:40px">🚀</div>
+            <h4 class="fw-bold mt-2">Welcome back</h4>
             <p class="text-muted small">Sign in to your SnippetHub account</p>
           </div>
           <div id="login-alert"></div>
           <div class="mb-3">
-            <label class="form-label small fw-semibold">Email</label>
-            <input type="email" id="login-email" class="form-control" placeholder="you@example.com"/>
+            <label class="form-label small fw-semibold">Email address</label>
+            <input type="email" id="login-email" class="form-control" placeholder="you@example.com" autocomplete="email"/>
           </div>
-          <div class="mb-3">
+          <div class="mb-4">
             <label class="form-label small fw-semibold">Password</label>
             <div class="input-group">
-              <input type="password" id="login-password" class="form-control" placeholder="••••••••"/>
+              <input type="password" id="login-password" class="form-control" placeholder="••••••••" autocomplete="current-password"/>
               <button class="btn btn-outline-secondary" type="button" onclick="togglePass('login-password')"><i class="bi bi-eye"></i></button>
             </div>
           </div>
-          <button class="btn btn-primary w-100 fw-semibold" onclick="login()">
-            <i class="bi bi-box-arrow-in-right"></i> Sign In
+          <button class="btn btn-primary w-100 fw-semibold py-2" onclick="login()">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
           </button>
-          <p class="text-center mt-3 small text-muted">No account? <a href="#" onclick="showPage('register')">Create one</a></p>
+          <p class="text-center mt-3 small text-muted">
+            No account? <a href="#" onclick="showPage('register')" class="text-primary fw-semibold">Create one free</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── REGISTER PAGE ── -->
+  <!-- ── REGISTER ── -->
   <div id="page-register" class="page d-none row justify-content-center">
     <div class="col-md-4 col-sm-10">
-      <div class="auth-card card shadow-lg">
+      <div class="auth-card card">
         <div class="card-body p-4">
           <div class="text-center mb-4">
-            <i class="bi bi-person-plus fs-1 text-success"></i>
-            <h4 class="mt-2 fw-bold">Create Account</h4>
+            <div style="font-size:40px">✨</div>
+            <h4 class="fw-bold mt-2">Create account</h4>
+            <p class="text-muted small">Join thousands of developers</p>
           </div>
           <div id="register-alert"></div>
           <div class="mb-3">
             <label class="form-label small fw-semibold">Username</label>
-            <input type="text" id="reg-username" class="form-control" placeholder="coolcoder123"/>
+            <input type="text" id="reg-username" class="form-control" placeholder="coolcoder123" autocomplete="username"/>
           </div>
           <div class="mb-3">
-            <label class="form-label small fw-semibold">Email</label>
-            <input type="email" id="reg-email" class="form-control" placeholder="you@example.com"/>
+            <label class="form-label small fw-semibold">Email address</label>
+            <input type="email" id="reg-email" class="form-control" placeholder="you@example.com" autocomplete="email"/>
           </div>
-          <div class="mb-3">
+          <div class="mb-4">
             <label class="form-label small fw-semibold">Password</label>
             <div class="input-group">
-              <input type="password" id="reg-password" class="form-control" placeholder="Min 6 characters"/>
+              <input type="password" id="reg-password" class="form-control" placeholder="Min 6 characters" autocomplete="new-password"/>
               <button class="btn btn-outline-secondary" type="button" onclick="togglePass('reg-password')"><i class="bi bi-eye"></i></button>
             </div>
-            <div class="password-strength mt-1" id="pass-strength"></div>
+            <div class="password-strength mt-2" id="pass-strength"></div>
+            <small class="text-muted" id="pass-hint"></small>
           </div>
-          <button class="btn btn-success w-100 fw-semibold" onclick="register()">
-            <i class="bi bi-person-check"></i> Create Account
+          <button class="btn btn-success w-100 fw-semibold py-2" onclick="register()">
+            <i class="bi bi-person-check me-1"></i> Create Account
           </button>
-          <p class="text-center mt-3 small text-muted">Have account? <a href="#" onclick="showPage('login')">Sign in</a></p>
+          <p class="text-center mt-3 small text-muted">
+            Have account? <a href="#" onclick="showPage('login')" class="text-primary fw-semibold">Sign in</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── DASHBOARD PAGE ── -->
+  <!-- ── DASHBOARD ── -->
   <div id="page-dashboard" class="page d-none">
-    <!-- Toolbar -->
     <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
       <div class="input-group search-bar">
         <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input type="text" id="search-input" class="form-control" placeholder="Search snippets..." oninput="debounceFilter()"/>
+        <input type="text" id="search-input" class="form-control" placeholder="Search snippets…" oninput="debounceFilter()"/>
+        <button class="btn btn-outline-secondary btn-sm" id="clear-search" style="display:none" onclick="clearSearch()"><i class="bi bi-x"></i></button>
       </div>
       <select id="lang-filter" class="form-select w-auto" onchange="filterSnippets()">
         <option value="">All Languages</option>
@@ -139,38 +142,34 @@
         <option value="other">Other</option>
       </select>
       <select id="sort-filter" class="form-select w-auto" onchange="filterSnippets()">
-        <option value="newest">Newest</option>
-        <option value="oldest">Oldest</option>
-        <option value="popular">Most Viewed</option>
-        <option value="liked">Most Liked</option>
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="popular">Most viewed</option>
+        <option value="liked">Most liked</option>
       </select>
-      <!-- View toggle -->
       <div class="btn-group ms-auto">
-        <button class="btn btn-sm btn-outline-secondary active" id="grid-btn" onclick="setView('grid')"><i class="bi bi-grid-3x3-gap"></i></button>
-        <button class="btn btn-sm btn-outline-secondary" id="list-btn" onclick="setView('list')"><i class="bi bi-list-ul"></i></button>
+        <button class="btn btn-sm btn-outline-secondary active" id="grid-btn" onclick="setView('grid')" title="Grid view"><i class="bi bi-grid-3x3-gap"></i></button>
+        <button class="btn btn-sm btn-outline-secondary" id="list-btn" onclick="setView('list')" title="List view"><i class="bi bi-list-ul"></i></button>
       </div>
-      <button class="btn btn-primary btn-sm fw-semibold" onclick="openAddModal()">
-        <i class="bi bi-plus-lg"></i> New Snippet
+      <button class="btn btn-primary btn-sm fw-semibold px-3" onclick="openAddModal()">
+        <i class="bi bi-plus-lg me-1"></i>New Snippet
       </button>
     </div>
-
-    <!-- Tag cloud -->
-    <div id="tag-cloud" class="mb-3 d-flex flex-wrap gap-1"></div>
-
-    <!-- Snippets grid/list -->
+    <div id="tag-cloud" class="mb-3 d-flex flex-wrap gap-1 align-items-center"></div>
     <div id="snippets-container" class="row g-3"></div>
-
-    <!-- Pagination -->
-    <div id="pagination" class="d-flex justify-content-center mt-4 gap-2"></div>
+    <div id="pagination" class="d-flex justify-content-center mt-4 gap-2 flex-wrap"></div>
   </div>
 
-  <!-- ── EXPLORE PAGE ── -->
+  <!-- ── EXPLORE ── -->
   <div id="page-explore" class="page d-none">
-    <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-      <h5 class="mb-0 fw-bold"><i class="bi bi-compass text-primary"></i> Explore Public Snippets</h5>
+    <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
+      <div>
+        <h5 class="fw-bold mb-0"><i class="bi bi-compass text-primary me-2"></i>Explore Public Snippets</h5>
+        <small class="text-muted">Discover code shared by the community</small>
+      </div>
       <div class="input-group search-bar ms-auto">
         <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input type="text" id="explore-search" class="form-control" placeholder="Search public snippets..." oninput="debounceExplore()"/>
+        <input type="text" id="explore-search" class="form-control" placeholder="Search public snippets…" oninput="debounceExplore()"/>
       </div>
       <select id="explore-lang" class="form-select w-auto" onchange="fetchExplore()">
         <option value="">All Languages</option>
@@ -188,26 +187,32 @@
     <div id="explore-container" class="row g-3"></div>
   </div>
 
-  <!-- ── COLLECTIONS PAGE ── -->
+  <!-- ── COLLECTIONS ── -->
   <div id="page-collections" class="page d-none">
-    <div class="d-flex align-items-center mb-3">
-      <h5 class="mb-0 fw-bold"><i class="bi bi-folder text-warning"></i> My Collections</h5>
-      <button class="btn btn-primary btn-sm ms-auto" onclick="openNewCollectionModal()">
-        <i class="bi bi-folder-plus"></i> New Collection
+    <div class="d-flex align-items-center mb-4">
+      <div>
+        <h5 class="fw-bold mb-0"><i class="bi bi-folder2-open text-warning me-2"></i>My Collections</h5>
+        <small class="text-muted">Organize snippets into folders</small>
+      </div>
+      <button class="btn btn-primary btn-sm fw-semibold ms-auto px-3" onclick="openNewCollectionModal()">
+        <i class="bi bi-folder-plus me-1"></i>New Collection
       </button>
     </div>
     <div id="collections-container" class="row g-3"></div>
   </div>
 
-  <!-- ── STATS PAGE ── -->
+  <!-- ── STATS ── -->
   <div id="page-stats" class="page d-none">
-    <h5 class="fw-bold mb-3"><i class="bi bi-bar-chart text-info"></i> My Statistics</h5>
+    <div class="mb-4">
+      <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-line text-info me-2"></i>My Statistics</h5>
+      <small class="text-muted">Overview of your activity</small>
+    </div>
     <div class="row g-3 mb-4" id="stats-cards"></div>
     <div class="row g-3">
       <div class="col-md-6">
         <div class="card h-100">
           <div class="card-body">
-            <h6 class="fw-bold mb-3">Top Languages</h6>
+            <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart me-2 text-primary"></i>Top Languages</h6>
             <div id="lang-chart"></div>
           </div>
         </div>
@@ -215,7 +220,7 @@
       <div class="col-md-6">
         <div class="card h-100">
           <div class="card-body">
-            <h6 class="fw-bold mb-3">Recent Activity</h6>
+            <h6 class="fw-bold mb-3"><i class="bi bi-clock-history me-2 text-success"></i>Recent Activity</h6>
             <div id="activity-list"></div>
           </div>
         </div>
@@ -223,29 +228,43 @@
     </div>
   </div>
 
-  <!-- ── PROFILE PAGE ── -->
+  <!-- ── PROFILE ── -->
   <div id="page-profile" class="page d-none">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow mb-4">
           <div class="card-body p-4">
-            <h5 class="fw-bold mb-4"><i class="bi bi-person-circle"></i> My Profile</h5>
+            <h5 class="fw-bold mb-4"><i class="bi bi-person-circle me-2 text-primary"></i>My Profile</h5>
             <div id="profile-alert"></div>
             <div class="mb-3 text-center">
-              <div class="avatar-picker mb-2" id="avatar-picker"></div>
-              <small class="text-muted">Pick an avatar</small>
+              <p class="small text-muted mb-2 fw-semibold">Choose your avatar</p>
+              <div class="avatar-picker" id="avatar-picker"></div>
             </div>
             <div class="mb-3">
               <label class="form-label small fw-semibold">Bio</label>
-              <textarea id="profile-bio" class="form-control" rows="3" placeholder="Tell something about yourself..."></textarea>
+              <textarea id="profile-bio" class="form-control" rows="3" placeholder="Tell something about yourself…"></textarea>
+              <small class="text-muted">Max 200 characters</small>
             </div>
-            <button class="btn btn-primary w-100 mb-4" onclick="saveProfile()">Save Profile</button>
-            <hr/>
-            <h6 class="fw-bold mb-3">Change Password</h6>
+            <button class="btn btn-primary w-100 fw-semibold" onclick="saveProfile()">
+              <i class="bi bi-check-lg me-1"></i>Save Profile
+            </button>
+          </div>
+        </div>
+        <div class="card shadow">
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-3"><i class="bi bi-shield-lock me-2 text-warning"></i>Change Password</h6>
             <div id="pass-alert"></div>
-            <input type="password" id="cur-pass" class="form-control mb-2" placeholder="Current password"/>
-            <input type="password" id="new-pass" class="form-control mb-3" placeholder="New password (min 6 chars)"/>
-            <button class="btn btn-warning w-100" onclick="changePassword()">Update Password</button>
+            <div class="mb-2">
+              <label class="form-label small fw-semibold">Current Password</label>
+              <input type="password" id="cur-pass" class="form-control" placeholder="Current password"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">New Password</label>
+              <input type="password" id="new-pass" class="form-control" placeholder="Min 6 characters"/>
+            </div>
+            <button class="btn btn-warning w-100 fw-semibold" onclick="changePassword()">
+              <i class="bi bi-key me-1"></i>Update Password
+            </button>
           </div>
         </div>
       </div>
@@ -254,24 +273,24 @@
 
 </div><!-- /app -->
 
-<!-- ═══════════════════════════════════════════════════════ SNIPPET MODAL -->
+<!-- ══════════════════════════════════════ SNIPPET MODAL -->
 <div class="modal fade" id="snippetModal" tabindex="-1">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modal-title"><i class="bi bi-code-square"></i> New Snippet</h5>
+      <div class="modal-header py-3">
+        <h5 class="modal-title fw-bold" id="modal-title"><i class="bi bi-code-square me-2"></i>New Snippet</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body p-4">
         <div id="modal-alert"></div>
         <input type="hidden" id="edit-id"/>
-        <div class="row g-3">
+        <div class="row g-3 mb-3">
           <div class="col-md-8">
-            <label class="form-label small fw-semibold">Title *</label>
+            <label class="form-label small fw-semibold">Title <span class="text-danger">*</span></label>
             <input type="text" id="snippet-title" class="form-control" placeholder="e.g. Binary Search in C++"/>
           </div>
           <div class="col-md-4">
-            <label class="form-label small fw-semibold">Language *</label>
+            <label class="form-label small fw-semibold">Language <span class="text-danger">*</span></label>
             <select id="snippet-lang" class="form-select" onchange="updateEditorLang()">
               <option value="c">C</option><option value="cpp">C++</option>
               <option value="python">Python</option><option value="java">Java</option>
@@ -280,50 +299,56 @@
               <option value="other">Other</option>
             </select>
           </div>
-          <div class="col-12">
-            <label class="form-label small fw-semibold">Code *</label>
-            <div class="editor-wrapper">
-              <div class="editor-toolbar d-flex gap-2 align-items-center px-2 py-1">
-                <span id="editor-lang-label" class="badge bg-secondary">c</span>
-                <button class="btn btn-xs ms-auto" onclick="formatCode()" title="Format"><i class="bi bi-magic"></i></button>
-                <button class="btn btn-xs" onclick="copyCode()" title="Copy"><i class="bi bi-clipboard"></i></button>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Code <span class="text-danger">*</span></label>
+          <div class="editor-wrapper">
+            <div class="editor-toolbar">
+              <span class="editor-dot" style="background:#ff5f57"></span>
+              <span class="editor-dot" style="background:#febc2e"></span>
+              <span class="editor-dot" style="background:#28c840"></span>
+              <span id="editor-lang-label" class="badge bg-secondary ms-2" style="font-size:10px">c</span>
+              <div class="ms-auto d-flex gap-2">
+                <button class="btn btn-xs" onclick="formatCode()" title="Format (Tab→spaces)"><i class="bi bi-magic"></i> Format</button>
+                <button class="btn btn-xs" onclick="copyCode()" title="Copy code"><i class="bi bi-clipboard"></i> Copy</button>
               </div>
-              <textarea id="snippet-code" class="form-control code-editor" rows="14" placeholder="// Write your code here..." spellcheck="false"></textarea>
             </div>
+            <textarea id="snippet-code" class="form-control code-editor" rows="14" placeholder="// Write or paste your code here…" spellcheck="false"></textarea>
           </div>
+        </div>
+        <div class="row g-3 mb-3">
           <div class="col-md-8">
             <label class="form-label small fw-semibold">Description</label>
             <input type="text" id="snippet-desc" class="form-control" placeholder="Short description (optional)"/>
           </div>
           <div class="col-md-4">
-            <label class="form-label small fw-semibold">Tags (comma separated)</label>
+            <label class="form-label small fw-semibold">Tags <span class="text-muted">(comma separated)</span></label>
             <input type="text" id="snippet-tags" class="form-control" placeholder="sorting, array, dp"/>
           </div>
-          <div class="col-12">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="snippet-public"/>
-              <label class="form-check-label" for="snippet-public">
-                <i class="bi bi-globe"></i> Make Public — anyone with the link can view
-              </label>
-            </div>
-          </div>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="snippet-public"/>
+          <label class="form-check-label small" for="snippet-public">
+            <i class="bi bi-globe2 me-1 text-success"></i>
+            Make <strong>Public</strong> — anyone with the link can view this snippet
+          </label>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer py-3">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary fw-semibold" onclick="saveSnippet()">
-          <i class="bi bi-save"></i> Save Snippet
+        <button class="btn btn-primary fw-semibold px-4" onclick="saveSnippet()">
+          <i class="bi bi-save me-1"></i>Save Snippet
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ VIEW SNIPPET MODAL -->
+<!-- ══════════════════════════════════════ VIEW MODAL -->
 <div class="modal fade" id="viewModal" tabindex="-1">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header py-3">
         <div>
           <h5 class="modal-title fw-bold" id="view-title"></h5>
           <small class="text-muted" id="view-meta"></small>
@@ -331,22 +356,24 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body p-0">
-        <div class="d-flex align-items-center gap-2 px-3 py-2 border-bottom">
-          <span id="view-lang-badge" class="badge"></span>
-          <span id="view-tags" class="d-flex gap-1 flex-wrap"></span>
-          <div class="ms-auto d-flex gap-2">
-            <button class="btn btn-sm btn-outline-secondary" onclick="copyViewCode()"><i class="bi bi-clipboard"></i> Copy</button>
-            <button class="btn btn-sm btn-outline-info" id="share-btn" onclick="shareSnippet()"><i class="bi bi-share"></i> Share</button>
-            <button class="btn btn-sm btn-outline-danger" id="like-btn" onclick="toggleLike()"><i class="bi bi-heart"></i> <span id="like-count">0</span></button>
+        <div class="d-flex align-items-center flex-wrap gap-2 px-3 py-2 border-bottom">
+          <span id="view-lang-badge" class="badge bg-secondary lang-badge"></span>
+          <div id="view-tags" class="d-flex gap-1 flex-wrap"></div>
+          <div class="ms-auto d-flex gap-2 flex-wrap">
+            <button class="btn btn-sm btn-outline-secondary" onclick="copyViewCode()"><i class="bi bi-clipboard me-1"></i>Copy</button>
+            <button class="btn btn-sm btn-outline-info" id="share-btn" onclick="shareSnippet()"><i class="bi bi-share me-1"></i>Share</button>
+            <button class="btn btn-sm btn-outline-danger" id="like-btn" onclick="toggleLike()">
+              <i class="bi bi-heart me-1"></i><span id="like-count">0</span>
+            </button>
           </div>
         </div>
-        <pre class="m-0"><code id="view-code" class="rounded-0"></code></pre>
-        <div class="px-3 py-3 border-top">
-          <h6 class="fw-bold mb-2"><i class="bi bi-chat"></i> Comments</h6>
+        <pre class="m-0"><code id="view-code"></code></pre>
+        <div class="px-4 py-3 border-top">
+          <h6 class="fw-bold mb-3"><i class="bi bi-chat-dots me-2 text-primary"></i>Comments</h6>
           <div id="comments-list" class="mb-3"></div>
           <div class="input-group">
-            <input type="text" id="comment-input" class="form-control" placeholder="Add a comment..."/>
-            <button class="btn btn-primary" onclick="addComment()">Post</button>
+            <input type="text" id="comment-input" class="form-control" placeholder="Write a comment…" maxlength="500"/>
+            <button class="btn btn-primary fw-semibold" onclick="addComment()"><i class="bi bi-send"></i></button>
           </div>
         </div>
       </div>
@@ -354,33 +381,39 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ COLLECTION MODAL -->
+<!-- ══════════════════════════════════════ COLLECTION MODAL -->
 <div class="modal fade" id="collectionModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold"><i class="bi bi-folder-plus"></i> New Collection</h5>
+        <h5 class="modal-title fw-bold"><i class="bi bi-folder-plus me-2"></i>New Collection</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <div id="col-alert"></div>
-        <label class="form-label small fw-semibold">Collection Name</label>
-        <input type="text" id="col-name" class="form-control mb-3" placeholder="e.g. Sorting Algorithms"/>
-        <label class="form-label small fw-semibold">Color</label>
-        <div class="d-flex gap-2 flex-wrap" id="color-picker"></div>
-        <input type="hidden" id="col-color" value="#0d6efd"/>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Collection Name</label>
+          <input type="text" id="col-name" class="form-control" placeholder="e.g. Sorting Algorithms" maxlength="100"/>
+        </div>
+        <div class="mb-2">
+          <label class="form-label small fw-semibold">Color</label>
+          <div class="d-flex gap-2 flex-wrap mt-1" id="color-picker"></div>
+          <input type="hidden" id="col-color" value="#0d6efd"/>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" onclick="createCollection()">Create</button>
+        <button class="btn btn-primary fw-semibold" onclick="createCollection()">
+          <i class="bi bi-folder-plus me-1"></i>Create
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Toast notification -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="toast" class="toast align-items-center border-0" role="alert">
+<!-- ══════════════════════════════════════ TOAST -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="toast" class="toast align-items-center border-0" role="alert" aria-live="assertive">
     <div class="d-flex">
       <div class="toast-body fw-semibold" id="toast-msg"></div>
       <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
